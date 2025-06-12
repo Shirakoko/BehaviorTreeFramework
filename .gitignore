@@ -21,7 +21,6 @@ echo
 *.svd
 *.pdb
 *.opendb
-*.cs.meta
 *.vscode
 
 # Unity3D generated meta files
