@@ -1,5 +1,6 @@
 using System;
 
+/** 条件（Condition）：判断某个条件是否成立 */
 public class Condition : ExecutionNode
 {
     private readonly Func<bool> condition;
