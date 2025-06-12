@@ -4,8 +4,6 @@ using System;
 
 public static class GhostSimulator
 {
-
-
     // 是否处于能量豆状态
     public static Func<bool> IsPowerModeActive()
     {
