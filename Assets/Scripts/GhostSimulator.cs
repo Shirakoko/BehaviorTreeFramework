@@ -4,7 +4,8 @@ using System;
 
 public static class GhostSimulator
 {
-    // 是否处于能量豆状态
+    #region 条件
+    // 玩家是否处于能量豆状态
     public static Func<bool> IsPowerModeActive()
     {
         return () => GameManager.Instance.IsPowerModeActive();
@@ -20,7 +21,9 @@ public static class GhostSimulator
             return distance <= range;
         };
     }
+    #endregion
 
+    #region 行为
     // 巡逻
     public static Func<NodeStatus> GhostPatrol(Transform ghost, List<Vector2> points, float speed, float waitTime)
     {
@@ -32,7 +35,8 @@ public static class GhostSimulator
 
         return () =>
         {
-            if (points == null || points.Count == 0) {
+            if (points == null || points.Count == 0)
+            {
                 return NodeStatus.Failure;
             }
 
@@ -50,12 +54,12 @@ public static class GhostSimulator
 
             Vector2 targetPoint = points[currentIndex];
             Vector2 currentPos = ghost.position;
-            
+
             // 计算并设置移动速度和方向
             Vector2 direction = (targetPoint - currentPos).normalized;
             ghostController.CurrentDirection = direction;
             ghostController.CurrentVelocity = speed;
-            
+
             // 移动幽灵
             ghost.position = Vector2.MoveTowards(
                 currentPos,
@@ -86,7 +90,7 @@ public static class GhostSimulator
             }
 
             float distanceToPlayer = Vector2.Distance(ghost.position, GameManager.Instance.PlayerTransform.position);
-            
+
             if (distanceToPlayer <= range)
             {
                 // 计算并设置移动速度和方向
@@ -120,7 +124,7 @@ public static class GhostSimulator
             }
 
             float distanceToPlayer = Vector2.Distance(ghost.position, GameManager.Instance.PlayerTransform.position);
-            
+
             // 如果已经达到安全距离，直接返回成功
             if (distanceToPlayer >= safeDistance)
             {
@@ -142,4 +146,5 @@ public static class GhostSimulator
             return NodeStatus.Running;
         };
     }
+    #endregion
 } 

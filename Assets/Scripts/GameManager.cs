@@ -13,10 +13,10 @@ public class GameManager : MonoBehaviour
     public int InitialLives => initialLives;
 
     [Header("事件")]
-    public UnityEvent<int> onScoreChanged;
-    public UnityEvent<int> onLivesChanged;
-    public UnityEvent onPowerDotActivated;
-    public UnityEvent onPowerDotDeactivated;
+    public UnityEvent<int> onScoreChanged; // 得分改变
+    public UnityEvent<int> onLivesChanged; // 生命改变
+    public UnityEvent onPowerDotActivated;  // 能量模式激活
+    public UnityEvent onPowerDotDeactivated; // 能量模式失活
 
     private int currentScore = 0;
     private int currentLives;
