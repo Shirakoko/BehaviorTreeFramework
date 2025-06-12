@@ -2,6 +2,7 @@
 public abstract class Decorator : ControlNode
 {
     protected BTNode child;
+    public bool HasChild => child != null;  // 是否有子节点
 
     public void SetChild(BTNode node)
     {

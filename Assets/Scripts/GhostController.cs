@@ -75,12 +75,11 @@ public class GhostController : MonoBehaviour
 
         // 构建行为树
         behaviorTree = builder
-            .Selector() // 选择器
+            .Parallel(-1) // 选择器
                 // 如果玩家处于能量豆状态，优先逃跑
                 .Sequence()
                     .Condition(GhostSimulator.IsPowerModeActive())
                     .Action(GhostSimulator.GhostFlee(transform, fleeSpeed, safeDistance))
-                    .Action(GhostSimulator.GhostPatrol(transform, patrolPoints, patrolSpeed, waitTimeAtPatrolPoint))
                 .End()
                 // 如果玩家在检测范围内，追击玩家
                 .Sequence()
