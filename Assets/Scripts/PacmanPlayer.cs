@@ -10,7 +10,9 @@ public class PacmanPlayer : MonoBehaviour
 
     [Header("组件引用")]
     [SerializeField] private Animator animator;
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    private SpriteRenderer spriteRenderer;
+    [SerializeField] private Sprite normalSprite;    // 普通状态精灵
+    [SerializeField] private Sprite powerfulSprite;  // 能量状态精灵
 
     private Rigidbody2D rb;
     private CircleCollider2D circleCollider;
@@ -46,6 +48,43 @@ public class PacmanPlayer : MonoBehaviour
 
         if (animator == null) animator = GetComponent<Animator>();
         if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // 订阅能量豆事件
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.onPowerDotActivated.AddListener(OnPowerModeActivated);
+            GameManager.Instance.onPowerDotDeactivated.AddListener(OnPowerModeDeactivated);
+        }
+        else
+        {
+            Debug.LogError("PacmanPlayer: GameManager.Instance为空，无法订阅事件！");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // 取消订阅事件
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.onPowerDotActivated.RemoveListener(OnPowerModeActivated);
+            GameManager.Instance.onPowerDotDeactivated.RemoveListener(OnPowerModeDeactivated);
+        }
+    }
+
+    private void OnPowerModeActivated()
+    {
+        if (spriteRenderer != null && powerfulSprite != null)
+        {
+            spriteRenderer.sprite = powerfulSprite;
+        }
+    }
+
+    private void OnPowerModeDeactivated()
+    {
+        if (spriteRenderer != null && normalSprite != null)
+        {
+            spriteRenderer.sprite = normalSprite;
+        }
     }
 
     private void Update()
@@ -61,8 +100,18 @@ public class PacmanPlayer : MonoBehaviour
             nextDirection = inputDirection;
         }
 
-        // 更新动画
-        UpdateAnimation();
+        // 根据移动方向翻转Sprite
+        if (spriteRenderer != null)
+        {
+            if (currentDirection.x < 0)
+            {
+                spriteRenderer.flipX = true;
+            }
+            else if (currentDirection.x > 0)
+            {
+                spriteRenderer.flipX = false;
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -110,23 +159,6 @@ public class PacmanPlayer : MonoBehaviour
         );
 
         return hit.collider == null;
-    }
-
-    private void UpdateAnimation()
-    {
-
-        // 根据移动方向翻转精灵
-        if (spriteRenderer != null)
-        {
-            if (currentDirection.x < 0)
-            {
-                spriteRenderer.flipX = true;
-            }
-            else if (currentDirection.x > 0)
-            {
-                spriteRenderer.flipX = false;
-            }
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
