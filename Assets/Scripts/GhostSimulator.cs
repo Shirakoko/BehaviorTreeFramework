@@ -6,9 +6,9 @@ public static class GhostSimulator
 {
     #region 条件
     // 玩家是否处于能量豆状态
-    public static Func<bool> IsPowerModeActive()
+    public static Func<bool> IsPowerModeActive(Transform ghost, float safeDistance)
     {
-        return () => GameManager.Instance.IsPowerModeActive();
+        return () => GameManager.Instance.IsPowerModeActive() && Vector2.Distance(ghost.position, GameManager.Instance.PlayerTransform.position) < safeDistance;
     }
 
     // 玩家是否在范围内
@@ -35,6 +35,9 @@ public static class GhostSimulator
 
         return () =>
         {
+            // 设置行为状态
+            ghostController.SwitchBehavior(GhostController.GhostBehavior.Patrol);
+
             if (points == null || points.Count == 0)
             {
                 return NodeStatus.Failure;
@@ -84,6 +87,9 @@ public static class GhostSimulator
 
         return () =>
         {
+            // 设置行为状态
+            ghostController.SwitchBehavior(GhostController.GhostBehavior.Chase);
+
             if (GameManager.Instance.PlayerTransform == null)
             {
                 return NodeStatus.Failure;
@@ -118,6 +124,9 @@ public static class GhostSimulator
 
         return () =>
         {
+            // 设置行为状态
+            ghostController.SwitchBehavior(GhostController.GhostBehavior.Flee);
+
             if (GameManager.Instance.PlayerTransform == null)
             {
                 return NodeStatus.Failure;

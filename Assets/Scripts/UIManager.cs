@@ -27,9 +27,6 @@ public class UIManager : MonoBehaviour
     [Header("游戏结束面板")]
     [SerializeField] private TextMeshProUGUI finalScoreText;
 
-    [Header("游戏设置")]
-    [SerializeField] private int initialLives = 3;  // 初始生命值
-
     private void Awake()
     {
         if (Instance == null)

@@ -129,8 +129,8 @@ public class BTBuilder
         return this;
     }
 
-    public BTPlannerRunner Build()
+    public BTRunner Build()
     {
-        return new BTPlannerRunner(root);
+        return new BTRunner(root);
     }
 }

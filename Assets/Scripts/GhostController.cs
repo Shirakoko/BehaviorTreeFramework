@@ -3,8 +3,17 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(CircleCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class GhostController : MonoBehaviour
 {
+    // 当前行为状态
+    public enum GhostBehavior
+    {
+        Patrol,
+        Chase,
+        Flee
+    }
+
     [Header("行为设置")]
     [SerializeField] private float patrolSpeed = 2f;
     [SerializeField] private float chaseSpeed = 3f;
@@ -13,13 +22,25 @@ public class GhostController : MonoBehaviour
     [SerializeField] private float safeDistance = 7f;
     [SerializeField] private float waitTimeAtPatrolPoint = 2f;
 
+    [Header("精灵设置")]
+    [SerializeField] private Sprite normalSprite;
+    [SerializeField] private Sprite fleeSprite;
 
     [Header("巡逻设置")]
     [SerializeField] private List<Transform> patrolPointTransforms = new List<Transform>();
 
+    // 公共属性访问Sprite
+    public Sprite NormalSprite => normalSprite;
+    public Sprite FleeSprite => fleeSprite;
+
+    // 当前行为状态
+    private GhostBehavior currentBehavior = GhostBehavior.Patrol;
+    public GhostBehavior CurrentBehavior => currentBehavior;
+
     private CircleCollider2D circleCollider;
     private Rigidbody2D rb;
-    private BTPlannerRunner behaviorTree;
+    private SpriteRenderer spriteRenderer;
+    private BTRunner behaviorTree;
     private List<Vector2> patrolPoints;
     private Vector2 currentDirection; // 当前移动方向
     private float currentVelocity; // 当前移动速度
@@ -43,6 +64,7 @@ public class GhostController : MonoBehaviour
     {
         circleCollider = GetComponent<CircleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         // 设置碰撞器
         circleCollider.isTrigger = false; // 改为非触发器，用于物理碰撞
@@ -64,6 +86,9 @@ public class GhostController : MonoBehaviour
             }
         }
 
+        // 设置初始精灵
+        SetSprite(normalSprite);
+
         // 构建行为树
         BuildBehaviorTree();
     }
@@ -75,10 +100,10 @@ public class GhostController : MonoBehaviour
 
         // 构建行为树
         behaviorTree = builder
-            .Parallel(-1) // 选择器
+            .Selector() // 选择器
                 // 如果玩家处于能量豆状态，优先逃跑
                 .Sequence()
-                    .Condition(GhostSimulator.IsPowerModeActive())
+                    .Condition(GhostSimulator.IsPowerModeActive(transform, safeDistance))
                     .Action(GhostSimulator.GhostFlee(transform, fleeSpeed, safeDistance))
                 .End()
                 // 如果玩家在检测范围内，追击玩家
@@ -149,6 +174,35 @@ public class GhostController : MonoBehaviour
         {
             // 从第0个巡逻点重新生成
             transform.position = patrolPoints[0];
+        }
+    }
+
+    // 切换行为状态
+    public void SwitchBehavior(GhostBehavior newBehavior)
+    {
+    if (currentBehavior != newBehavior)
+        {
+            currentBehavior = newBehavior;
+            // 根据新状态设置精灵
+            switch (newBehavior)
+            {
+                case GhostBehavior.Flee:
+                    SetSprite(fleeSprite);
+                    break;
+                case GhostBehavior.Patrol:
+                case GhostBehavior.Chase:
+                    SetSprite(normalSprite);
+                    break;
+            }
+        }
+    }
+
+    // 设置Sprite
+    private void SetSprite(Sprite sprite)
+    {
+        if (sprite != null && spriteRenderer != null)
+        {
+            spriteRenderer.sprite = sprite;
         }
     }
 } 
