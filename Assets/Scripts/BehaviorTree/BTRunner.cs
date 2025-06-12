@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class BTRunner
 {
     private BTNode root;
@@ -7,11 +9,14 @@ public class BTRunner
         this.root = root;
     }
 
-    public void ExecuteBT()
+    public NodeStatus ExecuteBT()
     {
         if (this.root != null)
         {
-            root.Execute();
+            return root.Execute();
         }
+        
+        Debug.Log("BTRunner: root is null!");
+        return NodeStatus.Failure;
     }
 }
