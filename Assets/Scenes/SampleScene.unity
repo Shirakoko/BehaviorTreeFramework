@@ -768,7 +768,8 @@ MonoBehaviour:
   moveSpeed: 4
   rotationSpeed: 180
   animator: {fileID: 0}
-  spriteRenderer: {fileID: 0}
+  normalSprite: {fileID: 21300000, guid: 93abf2673f89b62498d0c843e2cea4b4, type: 3}
+  powerfulSprite: {fileID: 21300000, guid: fe875da7f225c884fb19ce480cca74fd, type: 3}
 --- !u!58 &292397122
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -980,10 +981,10 @@ MonoBehaviour:
   safeDistance: 5
   waitTimeAtPatrolPoint: 1
   patrolPointTransforms:
-  - {fileID: 400711311}
-  - {fileID: 770284316}
-  - {fileID: 1373126411}
-  - {fileID: 909412495}
+  - {fileID: 734566150}
+  - {fileID: 741399470}
+  - {fileID: 1873621132}
+  - {fileID: 1177520439}
 --- !u!212 &398171829
 SpriteRenderer:
   m_ObjectHideFlags: 0

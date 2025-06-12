@@ -19,6 +19,7 @@ public class BTPlanner
 
     private void BuildExecutionStack(BTNode node)
     {
+        // 只有控制节点入栈，执行节点由控制节点的Execute控制执行
         if (node is ControlNode controlNode)
         {
             // 控制节点的子节点需要按执行顺序的反向压栈
@@ -26,7 +27,7 @@ public class BTPlanner
             {
                 BuildExecutionStack(controlNode.children[i]);
             }
+            executionStack.Push(node);
         }
-        executionStack.Push(node);
     }
 }
