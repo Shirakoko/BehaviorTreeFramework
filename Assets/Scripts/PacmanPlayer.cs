@@ -18,7 +18,6 @@ public class PacmanPlayer : MonoBehaviour
     private CircleCollider2D circleCollider;
     private Vector2 currentDirection = Vector2.right;
     private Vector2 nextDirection = Vector2.right;
-    private bool canMove = true;
 
     private void Awake()
     {
@@ -116,17 +115,15 @@ public class PacmanPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!canMove) return;
-
         // 尝试转向
         if (CanMoveInDirection(nextDirection))
         {
             currentDirection = nextDirection;
         }
-        // 如果无法转向，继续当前方向
+        // 如果无法转向，停止
         else if (!CanMoveInDirection(currentDirection))
         {
-            rb.velocity = Vector2.zero; // 碰到墙时停止移动
+            rb.velocity = Vector2.zero;
             return;
         }
 
@@ -149,8 +146,6 @@ public class PacmanPlayer : MonoBehaviour
         Vector2 origin = (Vector2)transform.position + direction * circleCollider.radius;
         float distance = 0.1f; // 检测距离
 
-        Debug.DrawRay(origin, direction * distance, Color.red);
-
         RaycastHit2D hit = Physics2D.Raycast(
             origin,
             direction,
@@ -161,41 +156,12 @@ public class PacmanPlayer : MonoBehaviour
         return hit.collider == null;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void ResetTransform()
     {
-
-        if (other.CompareTag("Ghost"))
-        {
-            if (GameManager.Instance.IsPowerModeActive())
-            {
-                Debug.Log("PacmanPlayer: Ate a ghost!");
-                Destroy(other.gameObject);
-                GameManager.Instance.AddScore(200);
-            }
-            else
-            {
-                Debug.Log("PacmanPlayer: Got eaten by ghost!");
-                GameManager.Instance.LoseLife();
-                Respawn();
-            }
-        }
-    }
-
-    private void Respawn()
-    {
-        // 重置位置到出生点
+        // 重置位置到原点
         transform.position = Vector3.zero;
         currentDirection = Vector2.right;
         nextDirection = Vector2.right;
         rb.velocity = Vector2.zero;
-    }
-
-    public void SetCanMove(bool value)
-    {
-        canMove = value;
-        if (!canMove)
-        {
-            rb.velocity = Vector2.zero;
-        }
     }
 } 

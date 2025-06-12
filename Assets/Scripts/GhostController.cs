@@ -29,10 +29,6 @@ public class GhostController : MonoBehaviour
     [Header("巡逻设置")]
     [SerializeField] private List<Transform> patrolPointTransforms = new List<Transform>();
 
-    // 公共属性访问Sprite
-    public Sprite NormalSprite => normalSprite;
-    public Sprite FleeSprite => fleeSprite;
-
     // 当前行为状态
     private GhostBehavior currentBehavior = GhostBehavior.Patrol;
     public GhostBehavior CurrentBehavior => currentBehavior;
@@ -152,23 +148,32 @@ public class GhostController : MonoBehaviour
             // 更新当前方向
             currentDirection = bounceDirection.normalized;
         }
-        else if (collision.gameObject.CompareTag("Player"))
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
         {
             if (GameManager.Instance.IsPowerModeActive())
             {
                 // 玩家处于能量豆状态，怪物被吃掉
+                Debug.Log("PacmanPlayer Ate a ghost!");
                 GameManager.Instance.AddScore(200);
+                // 新生成一个怪物
                 Respawn();
             }
             else
             {
                 // 玩家被怪物碰到，失去生命
+                Debug.Log("PacmanPlayer Lose Life!");
                 GameManager.Instance.LoseLife();
+                // 玩家重置回到原点
+                collision.gameObject.GetComponent<PacmanPlayer>().ResetTransform();
             }
         }
     }
 
-    public void Respawn()
+    private void Respawn()
     {
         if (patrolPoints.Count > 0)
         {
