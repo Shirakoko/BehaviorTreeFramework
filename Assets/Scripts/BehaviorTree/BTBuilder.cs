@@ -82,24 +82,6 @@ public class BTBuilder
         return this;
     }
 
-    public BTBuilder End()
-    {
-        if (nodeStack.Count > 1)
-        {
-            var node = nodeStack.Pop();
-            if (nodeStack.Peek() == null)
-            {
-                root = node;
-            }
-        }
-        return this;
-    }
-
-    public BTPlannerRunner Build()
-    {
-        return new BTPlannerRunner(root);
-    }
-
     private void AttachNode(BTNode node)
     {
         var parent = nodeStack.Peek();
@@ -131,5 +113,23 @@ public class BTBuilder
         {
             nodeStack.Push(controlNode);
         }
+    }
+
+    public BTBuilder End()
+    {
+        if (nodeStack.Count > 1)
+        {
+            var node = nodeStack.Pop();
+            if (nodeStack.Peek() == null)
+            {
+                root = node;
+            }
+        }
+        return this;
+    }
+
+    public BTPlannerRunner Build()
+    {
+        return new BTPlannerRunner(root);
     }
 }
