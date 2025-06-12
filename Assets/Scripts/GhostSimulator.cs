@@ -5,8 +5,8 @@ using System;
 public static class GhostSimulator
 {
     #region 条件
-    // 玩家是否处于能量豆状态
-    public static Func<bool> IsPowerModeActive(Transform ghost, float safeDistance)
+    // 玩家是否处于能量豆状态且是否在安全距离内
+    public static Func<bool> IsPowerModeAndWithinSafeDistance(Transform ghost, float safeDistance)
     {
         return () => GameManager.Instance.IsPowerModeActive() && Vector2.Distance(ghost.position, GameManager.Instance.PlayerTransform.position) < safeDistance;
     }
@@ -63,7 +63,7 @@ public static class GhostSimulator
             ghostController.CurrentDirection = direction;
             ghostController.CurrentVelocity = speed;
 
-            // 移动幽灵
+            // 移动
             ghost.position = Vector2.MoveTowards(
                 currentPos,
                 targetPoint,

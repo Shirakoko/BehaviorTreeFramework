@@ -101,9 +101,9 @@ public class GhostController : MonoBehaviour
         // 构建行为树
         behaviorTree = builder
             .Selector() // 选择器
-                // 如果玩家处于能量豆状态，优先逃跑
+                // 如果玩家处于能量豆状态且在安全距离内，优先逃跑
                 .Sequence()
-                    .Condition(GhostSimulator.IsPowerModeActive(transform, safeDistance))
+                    .Condition(GhostSimulator.IsPowerModeAndWithinSafeDistance(transform, safeDistance))
                     .Action(GhostSimulator.GhostFlee(transform, fleeSpeed, safeDistance))
                 .End()
                 // 如果玩家在检测范围内，追击玩家
@@ -156,13 +156,13 @@ public class GhostController : MonoBehaviour
         {
             if (GameManager.Instance.IsPowerModeActive())
             {
-                // 玩家处于能量豆状态，幽灵被吃掉
+                // 玩家处于能量豆状态，怪物被吃掉
                 GameManager.Instance.AddScore(200);
                 Respawn();
             }
             else
             {
-                // 玩家被幽灵碰到，失去生命
+                // 玩家被怪物碰到，失去生命
                 GameManager.Instance.LoseLife();
             }
         }
