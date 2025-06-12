@@ -12,14 +12,9 @@ public static class GhostSimulator
     }
 
     // 玩家是否在范围内
-    public static Func<bool> IsPlayerInRange(Transform ghost, float range)
+    public static Func<bool> IsNotPowerModeAndWithinRange(Transform ghost, float detectionRange)
     {
-        return () =>
-        {
-            if (GameManager.Instance.PlayerTransform == null) return false;
-            float distance = Vector2.Distance(ghost.position, GameManager.Instance.PlayerTransform.position);
-            return distance <= range;
-        };
+        return () => !GameManager.Instance.IsPowerModeActive() && Vector2.Distance(ghost.position, GameManager.Instance.PlayerTransform.position) < detectionRange;
     }
     #endregion
 

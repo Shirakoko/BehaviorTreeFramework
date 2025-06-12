@@ -106,9 +106,9 @@ public class GhostController : MonoBehaviour
                     .Condition(GhostSimulator.IsPowerModeAndWithinSafeDistance(transform, safeDistance))
                     .Action(GhostSimulator.GhostFlee(transform, fleeSpeed, safeDistance))
                 .End()
-                // 如果玩家在检测范围内，追击玩家
+                // 如果玩家在检测范围内且非能量豆状态，追击玩家
                 .Sequence()
-                    .Condition(GhostSimulator.IsPlayerInRange(transform, detectionRange))
+                    .Condition(GhostSimulator.IsNotPowerModeAndWithinRange(transform, detectionRange))
                     .Action(GhostSimulator.GhostChase(transform, chaseSpeed, detectionRange))
                 .End()
                 // 默认行为：巡逻
