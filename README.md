@@ -14,7 +14,7 @@
 
 ### 1. 下载 WebGL 版本
 
-从 Releases 下载 WebGL 版本：[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Shirakoko/BehaviorTreeFramework)](https://github.com/Shirakoko/BehaviorTreeFramework/releases/tag/v1.0)，解压后运行 index.html。
+从 Releases 下载 WebGL 版本：[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Shirakoko/BehaviorTreeFramework)](https://github.com/Shirakoko/BehaviorTreeFramework/releases/tag/v1.0)，解压后运行 `index.html`。
 
 ### 2. 在线运行 WebGL 版本
 
