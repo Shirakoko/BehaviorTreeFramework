@@ -290,7 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolSpeed: 1
-  chaseSpeed: 5
+  chaseSpeed: 4
   fleeSpeed: 6
   detectionRange: 10
   safeDistance: 8
@@ -976,7 +976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolSpeed: 1
-  chaseSpeed: 5
+  chaseSpeed: 4
   fleeSpeed: 6
   detectionRange: 10
   safeDistance: 8
