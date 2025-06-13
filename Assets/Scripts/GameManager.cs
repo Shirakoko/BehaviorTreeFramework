@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public UnityEvent<int> onLivesChanged; // 生命改变
     public UnityEvent onPowerDotActivated;  // 能量模式激活
     public UnityEvent onPowerDotDeactivated; // 能量模式失活
+    public UnityEvent onGameInitialized; // 游戏初始化事件
 
     private int currentScore = 0;
     private int currentLives;
@@ -37,6 +38,15 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void InitializeGame()
+    {
+        // 重置游戏状态
+        currentScore = 0;
+        currentLives = initialLives;
+        isPowerModeActive = false;
+        powerModeTimer = 0f;
 
         // 获取玩家引用
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -48,14 +58,25 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Player not found!");
         }
+
+        // 触发事件更新UI
+        onScoreChanged?.Invoke(currentScore);
+        onLivesChanged?.Invoke(currentLives);
+        onPowerDotDeactivated?.Invoke();
+
+        // 显示HUD
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowHUD();
+        }
+
+        // 触发游戏初始化事件
+        onGameInitialized?.Invoke();
     }
 
     private void Start()
     {
-        currentLives = initialLives;
-        onLivesChanged?.Invoke(currentLives);
-        onScoreChanged?.Invoke(currentScore);
-        
+        InitializeGame();
         // 订阅UI更新事件
         onScoreChanged.AddListener(score => UIManager.Instance.UpdateScore(score));
         onLivesChanged.AddListener(lives => UIManager.Instance.UpdateLives(lives));

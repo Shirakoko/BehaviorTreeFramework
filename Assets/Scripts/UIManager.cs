@@ -134,8 +134,9 @@ public class UIManager : MonoBehaviour
 
     public void OnRestartGameClicked()
     {
+        GameManager.Instance.InitializeGame();
+        ShowHUD();
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void OnQuitGameClicked()

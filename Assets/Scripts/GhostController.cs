@@ -43,7 +43,10 @@ public class GhostController : MonoBehaviour
     private bool isBouncing = false; // 是否正在反弹
     private float bounceTimer = 0f; // 反弹计时器
     private const float BOUNCE_DURATION = 0.2f; // 反弹持续时间
+    private Transform initialTranform; // 初始变换
     
+    private Vector3 initialPosition;
+
     public Vector2 CurrentDirection
     {
         get => currentDirection;
@@ -61,6 +64,10 @@ public class GhostController : MonoBehaviour
         circleCollider = GetComponent<CircleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        initialTranform = GetComponent<Transform>();
+
+        // 保存初始Transform信息
+        initialPosition = transform.position;
 
         // 设置碰撞器
         circleCollider.isTrigger = false; // 改为非触发器，用于物理碰撞
@@ -87,6 +94,33 @@ public class GhostController : MonoBehaviour
 
         // 构建行为树
         BuildBehaviorTree();
+
+        // 订阅游戏初始化事件
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.onGameInitialized.AddListener(ResetToInitialState);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // 取消订阅事件
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.onGameInitialized.RemoveListener(ResetToInitialState);
+        }
+    }
+
+    private void ResetToInitialState()
+    {
+        transform.position = initialPosition;
+        currentDirection = Vector2.right;
+        currentVelocity = 0f;
+        isBouncing = false;
+        bounceTimer = 0f;
+        rb.velocity = Vector2.zero;
+        SetSprite(normalSprite);
+        currentBehavior = GhostBehavior.Patrol;
     }
 
     private void BuildBehaviorTree()
@@ -175,11 +209,7 @@ public class GhostController : MonoBehaviour
 
     private void Respawn()
     {
-        if (patrolPoints.Count > 0)
-        {
-            // 从第0个巡逻点重新生成
-            transform.position = patrolPoints[0];
-        }
+        ResetToInitialState();
     }
 
     // 切换行为状态

@@ -1776,7 +1776,7 @@ MonoBehaviour:
   mapHeight: 40
   cellSize: 1
   initialDotCount: 4
-  powerDotChance: 0.8
+  powerDotChance: 0.5
 --- !u!4 &816167460
 Transform:
   m_ObjectHideFlags: 0
@@ -2676,6 +2676,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onPowerDotDeactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  onGameInitialized:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &1812327947
