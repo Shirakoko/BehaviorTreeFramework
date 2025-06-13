@@ -292,7 +292,7 @@ MonoBehaviour:
   patrolSpeed: 1
   chaseSpeed: 4
   fleeSpeed: 6
-  detectionRange: 10
+  detectionRange: 7
   safeDistance: 8
   waitTimeAtPatrolPoint: 1
   normalSprite: {fileID: 21300000, guid: 68cf6c1eab85be04b8dace37114a2692, type: 3}
@@ -978,7 +978,7 @@ MonoBehaviour:
   patrolSpeed: 1
   chaseSpeed: 4
   fleeSpeed: 6
-  detectionRange: 10
+  detectionRange: 7
   safeDistance: 8
   waitTimeAtPatrolPoint: 1
   normalSprite: {fileID: 21300000, guid: 68cf6c1eab85be04b8dace37114a2692, type: 3}
