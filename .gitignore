@@ -6,13 +6,13 @@
 .utmp/
 
 # Unity 自动生成的目录
-/[Ll]ibrary/  # Unity 库文件（包含编译缓存等）
-/[Tt]emp/    # 临时文件
-/[Oo]bj/     # 编译中间文件
-/[Bb]uild/   # 构建输出
-/[Bb]uilds/  # 多平台构建输出
-/[Ll]ogs/    # 日志文件
-/[Uu]ser[Ss]ettings/ # 用户特定设置
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
 
 # 日志文件
 *.log
@@ -78,9 +78,10 @@ mono_crash.*
 *.unitypackage.meta
 *.app
 
-# Packages 目录
+# Packages 目录仅保留 manifest.json
 /[Pp]ackages/*
-!/[Pp]ackages/manifest.json  # 保留 manifest.json 文件
+!/[Pp]ackages/manifest.json
+
 # Crashlytics 生成的文件
 crashlytics-build.properties
 
