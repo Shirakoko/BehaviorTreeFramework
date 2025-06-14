@@ -121,6 +121,7 @@ public class BTBuilder
         if (nodeStack.Count > 1)
         {
             var node = nodeStack.Pop();
+            // 此时栈顶是哨兵节点，说明刚才弹出的是最外层的根节点
             if (nodeStack.Peek() == null)
             {
                 root = node;
