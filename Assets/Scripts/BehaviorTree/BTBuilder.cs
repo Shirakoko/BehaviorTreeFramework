@@ -117,7 +117,7 @@ public class BTBuilder
 
     public BTBuilder End()
     {
-        // 哨兵节点位于栈底，要用nodeStack.Count > 1来判断栈中的节点个数是否 ＞ 0
+        // 哨兵节点位于栈底，要用nodeStack.Count > 1来判断栈中的节点个数是否 > 0
         if (nodeStack.Count > 1)
         {
             var node = nodeStack.Pop();
